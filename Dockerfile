@@ -1,12 +1,9 @@
-FROM alpine:3.3
+FROM alpine:3.4
 
 RUN apk add --update git python py-pip \
  && rm -rf /var/cache/apk/* \
- && pip install --no-cache-dir awscli docker-compose \
- && git config --global credential.helper '!aws codecommit credential-helper $@' \
- && git config --global credential.UseHttpPath true \
+ && pip install --no-cache-dir docker-compose \
  && git --version \
- && aws --version \
  && docker-compose -v
 
 WORKDIR /var/compose
