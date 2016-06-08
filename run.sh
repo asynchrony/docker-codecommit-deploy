@@ -1,5 +1,17 @@
 #!/bin/sh
 set -e
+
+if [ -z "$SSH_PRIVATE_KEY" ]; then
+  mkdir -p ~/.ssh
+  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+  chmod 0400 ~/.ssh/id_rsa
+fi
+if [ -z "$SSH_PUBLIC_KEY" ]; then
+  mkdir -p ~/.ssh
+  echo "$SSH_PUBLIC_KEY" > ~/.ssh/id_rsa.pub
+  chmod 0400 ~/.ssh/id_rsa.pub
+fi
+
 SHA1=
 rm -rf *
 git clone --depth=1 "${REPO}" .
