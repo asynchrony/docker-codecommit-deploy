@@ -1,19 +1,21 @@
 #!/bin/sh
 set -e
 
-if [ -z "$SSH_PRIVATE_KEY" ]; then
+if [ -n "$SSH_PRIVATE_KEY" ]; then
   mkdir -p ~/.ssh
-  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+  echo "-----BEGIN RSA PRIVATE KEY-----" > ~/.ssh/id_rsa
+  echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+  echo "-----END RSA PRIVATE KEY-----" >> ~/.ssh/id_rsa
   chmod 0400 ~/.ssh/id_rsa
 fi
-if [ -z "$SSH_PUBLIC_KEY" ]; then
+if [ -n "$SSH_KNOWN_HOSTS" ]; then
   mkdir -p ~/.ssh
-  echo "$SSH_PUBLIC_KEY" > ~/.ssh/id_rsa.pub
-  chmod 0400 ~/.ssh/id_rsa.pub
+  echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  chmod 0644 ~/.ssh/known_hosts
 fi
 
 SHA1=
-rm -rf *
+find . -name . -o -prune -delete
 git clone --depth=1 "${REPO}" .
 while true
 do
